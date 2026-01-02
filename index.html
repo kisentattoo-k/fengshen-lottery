@@ -58,16 +58,53 @@
 
   <div id="result" style="margin-top:40px;"></div>
 
-  <script>
-    function start() {
-      document.getElementById('result').innerText =
-        '卦已出，后续动画与封神人物即将显现';
-    }
-  </script>
+<script>
+  // 64卦示例数据（先用占位，后面直接接你WPS文件）
+  const hexagrams = [
+    { name: "乾卦", symbol: "☰", text: "元亨利贞" },
+    { name: "坤卦", symbol: "☷", text: "元亨，利牝马之贞" },
+    { name: "屯卦", symbol: "☳☵", text: "元亨利贞，勿用有攸往" },
+    { name: "蒙卦", symbol: "☶☵", text: "亨。匪我求童蒙" }
+    // 这里以后会是完整64卦
+  ];
+
+  function start() {
+    const result = document.getElementById("result");
+
+    // 1️⃣ 清空并显示“摇签中”
+    result.innerHTML = `
+      <div style="font-size:18px;">签筒摇动中……</div>
+      <div style="margin-top:20px;font-size:40px;">🎋</div>
+    `;
+
+    // 2️⃣ 模拟摇签延迟（仪式感）
+    setTimeout(() => {
+      result.innerHTML = `
+        <div style="font-size:18px;">一支卦签正在落下</div>
+        <div style="margin-top:20px;font-size:40px;">⬇️</div>
+      `;
+    }, 1500);
+
+    // 3️⃣ 掉签 → 定卦
+    setTimeout(() => {
+      const gua = hexagrams[Math.floor(Math.random() * hexagrams.length)];
+
+      result.innerHTML = `
+        <h2>${gua.name}</h2>
+        <div style="font-size:60px;margin:20px 0;">${gua.symbol}</div>
+        <div style="font-size:16px;color:#555;">${gua.text}</div>
+        <div style="margin-top:30px;font-size:14px;color:#888;">
+          （下一步：掷骰定爻）
+        </div>
+      `;
+    }, 3000);
+  }
+</script>
 
 </body>
 </html>
 
 </body>
 </html>
+
 
