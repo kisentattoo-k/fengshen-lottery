@@ -28,56 +28,83 @@
 
   <div id="result" style="margin-top:40px;"></div>
 
-  <!DOCTYPE html>
-<html lang="zh">
-<head>
-  <meta charset="UTF-8" />
-  <title>封神抽签 · Fengshen Lottery</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    body {
-      font-family: serif;
-      background: #f5f1e8;
-      text-align: center;
-      padding: 40px;
-    }
-    button {
-      font-size: 18px;
-      padding: 12px 30px;
-      margin-top: 30px;
-      cursor: pointer;
-    }
-  </style>
-</head>
-
-<body>
-
-  <h1>封神抽签</h1>
-  <p>点击下方开始摇卦</p >
-  <button onclick="start()">摇签</button>
-
-  <div id="result" style="margin-top:40px;"></div>
-
 <script>
-  // 64卦示例数据（先用占位，后面直接接你WPS文件）
+  // 完整 64 卦（名称 + Unicode 符号 + 简要说明占位）
   const hexagrams = [
-    { name: "乾卦", symbol: "☰", text: "元亨利贞" },
-    { name: "坤卦", symbol: "☷", text: "元亨，利牝马之贞" },
-    { name: "屯卦", symbol: "☳☵", text: "元亨利贞，勿用有攸往" },
-    { name: "蒙卦", symbol: "☶☵", text: "亨。匪我求童蒙" }
-    // 这里以后会是完整64卦
+    { name: "乾卦", symbol: "䷀", text: "元亨利贞" },
+    { name: "坤卦", symbol: "䷁", text: "顺承万物" },
+    { name: "屯卦", symbol: "䷂", text: "艰难起始" },
+    { name: "蒙卦", symbol: "䷃", text: "启蒙学习" },
+    { name: "需卦", symbol: "䷄", text: "等待时机" },
+    { name: "讼卦", symbol: "䷅", text: "冲突需正义" },
+    { name: "师卦", symbol: "䷆", text: "组织与行动" },
+    { name: "比卦", symbol: "䷇", text: "团结合作" },
+    { name: "小畜", symbol: "䷈", text: "积少成多" },
+    { name: "履卦", symbol: "䷉", text: "慎行得正" },
+    { name: "泰卦", symbol: "䷊", text: "天地交泰" },
+    { name: "否卦", symbol: "䷋", text: "天地不交" },
+    { name: "同人", symbol: "䷌", text: "志同道合" },
+    { name: "大有", symbol: "䷍", text: "盛大拥有" },
+    { name: "谦卦", symbol: "䷎", text: "谦逊有德" },
+    { name: "豫卦", symbol: "䷏", text: "愉悦安定" },
+    { name: "随卦", symbol: "䷐", text: "随遇而安" },
+    { name: "蛊卦", symbol: "䷑", text: "革除旧弊" },
+    { name: "临卦", symbol: "䷒", text: "临事宜慎" },
+    { name: "观卦", symbol: "䷓", text: "观察全局" },
+    { name: "噬嗑", symbol: "䷔", text: "断恶除患" },
+    { name: "贲卦", symbol: "䷕", text: "美饰提升" },
+    { name: "剥卦", symbol: "䷖", text: "剥落退化" },
+    { name: "复卦", symbol: "䷗", text: "回归本初" },
+    { name: "无妄", symbol: "䷘", text: "真诚无妄" },
+    { name: "大畜", symbol: "䷙", text: "大积发展" },
+    { name: "颐卦", symbol: "䷚", text: "滋养保养" },
+    { name: "大过", symbol: "䷛", text: "超越困境" },
+    { name: "坎卦", symbol: "䷜", text: "陷入困境" },
+    { name: "离卦", symbol: "䷝", text: "光明照耀" },
+    { name: "咸卦", symbol: "䷞", text: "感应相合" },
+    { name: "恒卦", symbol: "䷟", text: "持之以恒" },
+    { name: "遁卦", symbol: "䷠", text: "隐遁避难" },
+    { name: "大壮", symbol: "䷡", text: "大力以进" },
+    { name: "晋卦", symbol: "䷢", text: "向上进展" },
+    { name: "明夷", symbol: "䷣", text: "明智受伤" },
+    { name: "家人", symbol: "䷤", text: "家庭和顺" },
+    { name: "睽卦", symbol: "䷥", text: "各持己见" },
+    { name: "蹇卦", symbol: "䷦", text: "前途阻滞" },
+    { name: "解卦", symbol: "䷧", text: "问题解开" },
+    { name: "损卦", symbol: "䷨", text: "损益适度" },
+    { name: "益卦", symbol: "䷩", text: "增益发展" },
+    { name: "夬卦", symbol: "䷪", text: "决断果断" },
+    { name: "姤卦", symbol: "䷫", text: "偶遇际会" },
+    { name: "萃卦", symbol: "䷬", text: "聚集精华" },
+    { name: "升卦", symbol: "䷭", text: "步步提升" },
+    { name: "困卦", symbol: "䷮", text: "困境艰难" },
+    { name: "井卦", symbol: "䷯", text: "井然有序" },
+    { name: "革卦", symbol: "䷰", text: "大变革" },
+    { name: "鼎卦", symbol: "䷱", text: "鼎盛安定" },
+    { name: "震卦", symbol: "䷲", text: "雷动启发" },
+    { name: "艮卦", symbol: "䷳", text: "止而静思" },
+    { name: "渐卦", symbol: "䷴", text: "渐进发展" },
+    { name: "归妹", symbol: "䷵", text: "归顺待嫁" },
+    { name: "丰卦", symbol: "䷶", text: "丰盈光彩" },
+    { name: "旅卦", symbol: "䷷", text: "旅途反思" },
+    { name: "巽卦", symbol: "䷸", text: "顺风柔劲" },
+    { name: "兑卦", symbol: "䷹", text: "喜悦沟通" },
+    { name: "涣卦", symbol: "䷺", text: "散而复合" },
+    { name: "节卦", symbol: "䷻", text: "节制适中" },
+    { name: "中孚", symbol: "䷼", text: "诚信而合" },
+    { name: "小过", symbol: "䷽", text: "小心谨慎" },
+    { name: "既济", symbol: "䷾", text: "事情完成" },
+    { name: "未济", symbol: "䷿", text: "未竟之功" }
   ];
 
   function start() {
     const result = document.getElementById("result");
 
-    // 1️⃣ 清空并显示“摇签中”
     result.innerHTML = `
       <div style="font-size:18px;">签筒摇动中……</div>
       <div style="margin-top:20px;font-size:40px;">🎋</div>
     `;
 
-    // 2️⃣ 模拟摇签延迟（仪式感）
     setTimeout(() => {
       result.innerHTML = `
         <div style="font-size:18px;">一支卦签正在落下</div>
@@ -85,7 +112,6 @@
       `;
     }, 1500);
 
-    // 3️⃣ 掉签 → 定卦
     setTimeout(() => {
       const gua = hexagrams[Math.floor(Math.random() * hexagrams.length)];
 
@@ -93,9 +119,6 @@
         <h2>${gua.name}</h2>
         <div style="font-size:60px;margin:20px 0;">${gua.symbol}</div>
         <div style="font-size:16px;color:#555;">${gua.text}</div>
-        <div style="margin-top:30px;font-size:14px;color:#888;">
-          （下一步：掷骰定爻）
-        </div>
       `;
     }, 3000);
   }
@@ -103,8 +126,3 @@
 
 </body>
 </html>
-
-</body>
-</html>
-
-
